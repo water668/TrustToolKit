@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>免费安全证件照生成 - 专业证件照制作</title>
+    <meta name="description" content="免费安全证件照生成工具，支持1寸、2寸照片制作，纯前端处理，保护隐私安全">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>免费安全证件照生成</h1>
+            <p>免费在线证件照制作，支持1寸、2寸标准尺寸</p>
+            <div class="privacy-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/>
+                </svg>
+                <span>端侧处理 · 隐私安全</span>
+            </div>
+        </header>
+
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>隐私保护</h3>
+                <p>所有图片处理均在您的浏览器中完成，不上传服务器，保护您的隐私安全</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>极速处理</h3>
+                <p>纯前端技术，无需等待上传，即时预览和导出，效率更高</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📐</div>
+                <h3>标准尺寸</h3>
+                <p>支持1寸(295×413)、2寸(413×579)标准证件照尺寸，符合官方要求</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💎</div>
+                <h3>高清输出</h3>
+                <p>300DPI专业分辨率输出，打印清晰，满足各类证件需求</p>
+            </div>
+        </section>
+
+        <main class="main-content">
+            <div class="upload-section" id="uploadSection">
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="fileInput" accept="image/*">
+                    <div class="upload-icon">📷</div>
+                    <p>点击或拖拽上传图片</p>
+                    <p class="hint">支持 JPG、PNG、WebP 格式</p>
+                </div>
+            </div>
+
+            <div class="editor-section" id="editorSection" style="display: none;">
+                <div class="editor-container">
+                    <div class="canvas-wrapper" id="canvasWrapper">
+                        <canvas id="editorCanvas"></canvas>
+                        <div class="crop-frame" id="cropFrame"></div>
+                    </div>
+                    
+                    <div class="controls">
+                        <div class="size-selector">
+                            <h3>选择尺寸</h3>
+                            <label>
+                                <input type="radio" name="photoSize" value="1inch" checked>
+                                <span>1寸照<span class="size-detail">295 × 413px · 25mm × 35mm</span></span>
+                            </label>
+                            <label>
+                                <input type="radio" name="photoSize" value="2inch">
+                                <span>2寸照<span class="size-detail">413 × 579px · 35mm × 49mm</span></span>
+                            </label>
+                        </div>
+
+                        <div class="zoom-controls">
+                            <button id="zoomOutBtn">-</button>
+                            <span id="zoomValue">100%</span>
+                            <button id="zoomInBtn">+</button>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button id="resetBtn">重置</button>
+                            <button id="exportBtn">导出证件照</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="example-section">
+                <h2>使用场景示例</h2>
+                <div class="examples">
+                    <div class="example-item" onclick="loadExample(1)">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=ID%20card%20photo%20of%20professional%20Asian%20woman%20with%20neutral%20expression%20white%20background%20formal%20attire&image_size=portrait_4_3" alt="身份证照片示例">
+                        <div class="example-info">
+                            <h4>身份证照片</h4>
+                            <p>适合身份证、驾驶证等</p>
+                        </div>
+                    </div>
+                    <div class="example-item" onclick="loadExample(2)">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Passport%20photo%20of%20professional%20Asian%20man%20with%20neutral%20expression%20blue%20background%20business%20suit&image_size=portrait_4_3" alt="护照照片示例">
+                        <div class="example-info">
+                            <h4>护照签证</h4>
+                            <p>适合护照、签证等</p>
+                        </div>
+                    </div>
+                    <div class="example-item" onclick="loadExample(3)">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Professional%20resume%20photo%20of%20young%20Asian%20woman%20smiling%20white%20background%20business%20casual&image_size=portrait_4_3" alt="简历照片示例">
+                        <div class="example-info">
+                            <h4>简历照片</h4>
+                            <p>适合求职简历、工作证</p>
+                        </div>
+                    </div>
+                    <div class="example-item" onclick="loadExample(4)">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Student%20ID%20photo%20of%20young%20Asian%20girl%20with%20neutral%20expression%20white%20background%20school%20uniform&image_size=portrait_4_3" alt="学生证照片示例">
+                        <div class="example-info">
+                            <h4>学生证件</h4>
+                            <p>适合学生证、校园卡</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>© 2026 免费安全证件照生成 | 纯前端实现 · 隐私安全保障</p>
+            <p style="margin-top: 10px; font-size: 0.8rem;">所有图片处理均在浏览器端完成，不会上传至服务器</p>
+        </footer>
+
+        <div class="coffee-float">
+            <div class="coffee-trigger">
+                <span class="coffee-icon">☕</span>
+                <span class="coffee-text">请我喝杯咖啡</span>
+            </div>
+            <div class="coffee-qr">
+                <img src="assets/buy_me_a_coffee.jpg" alt="支付宝收款码">
+                <p>使用支付宝扫码支付</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
